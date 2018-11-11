@@ -25,17 +25,4 @@ const addData = async () => {
   user.setParent(user)
 }
 
-const work = async () => {
-  const user = await User.findByPk(1, {
-    include: [
-      {
-        model: UserDevice,
-        as: 'devices'
-      }
-    ]
-  })
-  console.log(await user.getGame())
-}
-
-// addData()
-work()
+addData()
