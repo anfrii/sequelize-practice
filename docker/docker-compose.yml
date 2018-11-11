@@ -1,0 +1,10 @@
+work_db:
+  container_name: work_db
+  image: mysql:5.7
+  volumes:
+    - ./mysql:/var/lib/mysql
+  environment:
+    MYSQL_ROOT_PASSWORD: root
+    MYSQL_DATABASE: db
+    MYSQL_USER: root
+    MYSQL_PASSWORD: root
