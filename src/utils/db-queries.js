@@ -4,7 +4,7 @@ const {
   Company,
   UserDevice,
   Sequelize,
-} = require('../models')
+} = require('../models/index')
 
 const Fn = Sequelize.fn
 const Op = Sequelize.Op

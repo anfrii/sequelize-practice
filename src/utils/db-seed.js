@@ -3,7 +3,7 @@ const {
   Game,
   Company,
   UserDevice,
-} = require('../models')
+} = require('../models/index')
 
 const addData = async () => {
   const user = await User.create({

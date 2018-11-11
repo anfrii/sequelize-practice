@@ -10,14 +10,18 @@ const validator = new Validator()
 // }
 
 // implement custom attribute
-validator.attributes.notEmpty = (instance, schema) => {
+Validator.prototype.addAttribute = function addAttribute(name, handler) {
+  this.attributes[name] = handler
+}
+
+validator.addAttribute('notEmpty', (instance, schema) => {
   if (typeof instance !== 'string') return
   checkBooleanAttr('notEmpty', schema)
 
   if (schema.notEmpty && instance.trim().length === 0) {
     return 'must be not empty'
   }
-}
+})
 
 const addressSchema = {
   id: '/AddressSchema',
@@ -56,7 +60,7 @@ const schema = {
 
 validator.addSchema(addressSchema)
 
-;(() => {
+export default () => {
   const data = {
     name: 'scent',
     level: 10,
@@ -75,4 +79,4 @@ validator.addSchema(addressSchema)
     console.log('Errors:')
     console.log(result.errors.join('\n'))
   }
-})()
+}

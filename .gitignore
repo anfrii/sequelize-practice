@@ -1,4 +1,5 @@
 node_modules
 .idea
+dist
 docker/mysql
 package-lock.json
