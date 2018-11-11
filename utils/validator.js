@@ -1,4 +1,5 @@
 const { Validator, ValidationError } = require('jsonschema')
+const { checkBooleanAttr } = require('./schema.utils')
 
 const validator = new Validator()
 
@@ -8,14 +9,28 @@ const validator = new Validator()
 //   return rest.join('.') + ' ' + this.message
 // }
 
+// implement custom attribute
+validator.attributes.notEmpty = (instance, schema) => {
+  if (typeof instance !== 'string') return
+  checkBooleanAttr('notEmpty', schema)
+
+  if (schema.notEmpty && instance.trim().length === 0) {
+    return 'must be not empty'
+  }
+}
+
 const addressSchema = {
   id: '/AddressSchema',
   type: 'object',
   required: ['city'],
   properties: {
     city: {
-      type: 'string'
-    }
+      type: 'string',
+    },
+    phone: {
+      type: 'string',
+      notEmpty: true
+    },
   }
 }
 
@@ -26,7 +41,7 @@ const schema = {
   properties: {
     name: {
       type: 'string',
-      format: 'alpha'
+      notEmpty: true,
     },
     level: {
       type: 'integer',
@@ -41,21 +56,23 @@ const schema = {
 
 validator.addSchema(addressSchema)
 
-(() => {
+;(() => {
   const data = {
     name: 'scent',
     level: 10,
     address: {
-      city: 'Kyiv'
+      city: 'Kyiv',
+      phone: '1111',
     }
   }
 
-  const res = validator.validate(data, schema)
-  if (res.valid) {
+  const result = validator.validate(data, schema)
+
+  if (result.valid) {
     console.log('Valid')
-    console.log(res.instance)
+    console.log(result.instance)
   } else {
     console.log('Errors:')
-    console.log(res.errors.join('\n'))
+    console.log(result.errors.join('\n'))
   }
 })()
